@@ -1,0 +1,6 @@
+.vs/*
+debug/*
+release/*
+build/*
+.qmake.stash
+*.user
