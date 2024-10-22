@@ -36,8 +36,8 @@ void ThreeBodyMotion::initialize()
         }
         else
         {
-            launchPoint = QPointF(QRandomGenerator::global()->bounded(m_maxDistance),
-                                  QRandomGenerator::global()->bounded(m_maxDistance));
+            launchPoint = QPointF(QRandomGenerator::global()->generateDouble() * m_maxDistance + 10,
+                                  QRandomGenerator::global()->generateDouble() * m_maxDistance + 10);
         }
         if (i < m_launchVelocities.size())
         {
@@ -134,6 +134,12 @@ void ThreeBodyMotion::timerEvent([[maybe_unused]] QTimerEvent *event)
 {
     updateBodies(); // 更新物体的位置、速度
     update();       // 请求重新绘制
+}
+
+void ThreeBodyMotion::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    initialize();
+    QQuickPaintedItem::geometryChange(newGeometry, oldGeometry);
 }
 
 void ThreeBodyMotion::handleBodies(int begin, int end)

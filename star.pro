@@ -1,3 +1,8 @@
+VERSION = 1.1.0
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+ANDROID_VERSION_NAME = $$VERSION
+ANDROID_VERSION_CODE = 2
+
 QT += quick qml concurrent
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -15,6 +20,15 @@ CONFIG += qmltypes
 QML_IMPORT_NAME = com.LFWQSP2641.qmlcomponents
 QML_IMPORT_MAJOR_VERSION = 1
 
+win32{
+QMAKE_TARGET_PRODUCT = "Star"
+
+QMAKE_TARGET_COPYRIGHT = "Copyright © 2024 - 2024 LFWQSP2641.All Rights Reserved."
+
+RC_LANG = 0x0004
+}
+
+
 INCLUDEPATH += \
     src
 
@@ -26,6 +40,9 @@ SOURCES += \
         src/LaunchingBall.cpp \
         src/ThreeBodyMotion.cpp \
         src/main.cpp
+
+RESOURCES += \
+    resource/ui.qrc
 
 DISTFILES += \
     android/AndroidManifest.xml \
@@ -42,6 +59,3 @@ contains(ANDROID_TARGET_ARCH,arm64-v8a) {
     ANDROID_PACKAGE_SOURCE_DIR = \
         $$PWD/android
 }
-
-RESOURCES += \
-    resource/ui.qrc

@@ -151,9 +151,6 @@ ApplicationWindow {
         id: cppThreeBodyMotionComponent
         ThreeBodyMotion {
             id: cppThreeBodyMotion
-            Component.onCompleted: {
-                cppThreeBodyMotion.initialize()
-            }
         }
     }
 
@@ -161,9 +158,6 @@ ApplicationWindow {
         id: cppLaunchingBallComponent
         LaunchingBall {
             id: cppLaunchingBall
-            Component.onCompleted: {
-                cppLaunchingBall.initialize()
-            }
         }
     }
 }

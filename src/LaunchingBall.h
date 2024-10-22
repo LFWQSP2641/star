@@ -22,10 +22,12 @@ protected:
     void paint(QPainter *painter) override;
     void timerEvent(QTimerEvent *event) override;
 
+    void geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry) override;
+
 protected:
     bool m_initialized = false;
     int m_timerId = 0;
-    int m_timerIntervalMs = 20;
+    int m_timerIntervalMs = 10;
 
     struct Ball
     {
@@ -36,11 +38,13 @@ protected:
         QList<QPointF> trail;
     };
 
+    Ball createBall(int index);
+
     QList<Ball> m_balls;
     QList<Ball> m_ballsNext;
 
-    int m_ballCount = 1000;
-    bool m_bounce = true;
+    int m_ballCount = 200;
+    bool m_bounce = false;
     bool m_enableDelay = true;
     int m_maxDelayMs = 8000;
     QList<QColor> m_colors;

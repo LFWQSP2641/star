@@ -8,7 +8,7 @@ Item {
     property var bodyRadius: [24]
     property int trailLength: 32
     property int timerInterval: 16
-    property double velocityMultiplier: 16
+    property double velocityMultiplier: 32
     property double maxDistance: Math.min(width, height) - 20
     property double maxVelocity: 2
 
