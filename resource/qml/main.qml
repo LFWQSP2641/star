@@ -73,9 +73,9 @@ ApplicationWindow {
             anchors.fill: parent
 
             model: ListModel {
+                ListElement { title: qsTr("Three Body Motion (C++)"); source: "item:cppThreeBodyMotionComponent" }
                 ListElement { title: qsTr("Three Body Motion"); source: "qrc:/quick/qml/ThreeBodyMotion_qml.qml" }
                 ListElement { title: qsTr("Launching Ball"); source: "qrc:/quick/qml/LaunchingBall.qml" }
-                ListElement { title: qsTr("Three Body Motion (C++)"); source: "item:cppThreeBodyMotionComponent" }
             }
 
             delegate: ItemDelegate {
