@@ -55,6 +55,7 @@ protected:
     QList<QFuture<void>> m_futures;
 
     void updateBodies();
+    void runHandleBodies(QList<QFuture<void>> &futures);
 };
 
 #endif // LAUNCHINGBALL_H

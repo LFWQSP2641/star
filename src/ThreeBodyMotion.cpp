@@ -196,18 +196,10 @@ void ThreeBodyMotion::handleBodies(int begin, int end)
 
 void ThreeBodyMotion::updateBodies()
 {
-    const int threadCount = QThreadPool::globalInstance()->maxThreadCount();
-    const int bodiesPerThread = m_bodies.size() / threadCount;
     if (m_futures.isEmpty())
     {
         QList<QFuture<void>> futures;
-        futures.reserve(threadCount);
-        for (int i(0); i < threadCount; ++i)
-        {
-            const int begin = i * bodiesPerThread;
-            const int end = (i == threadCount - 1) ? m_bodies.size() : (i + 1) * bodiesPerThread;
-            futures.append(QtConcurrent::run(&ThreeBodyMotion::handleBodies, this, begin, end));
-        }
+        runHandleBodies(futures);
         m_futures = std::move(futures);
     }
     for (auto &future : m_futures)
@@ -216,10 +208,30 @@ void ThreeBodyMotion::updateBodies()
     }
     m_bodies = std::move(m_bodiesNext);
     m_bodiesNext = QList<Body>(m_bodies.size());
+    runHandleBodies(m_futures);
+}
+
+void ThreeBodyMotion::runHandleBodies(QList<QFuture<void>> &futures)
+{
+    const int threadCount = QThreadPool::globalInstance()->maxThreadCount();
+    int bodiesPerThread = m_bodies.size() / threadCount;
+    if (bodiesPerThread == 0)
+    {
+        bodiesPerThread = 1;
+    }
     for (int i(0); i < threadCount; ++i)
     {
         const int begin = i * bodiesPerThread;
-        const int end = (i == threadCount - 1) ? m_bodies.size() : (i + 1) * bodiesPerThread;
-        m_futures.append(QtConcurrent::run(&ThreeBodyMotion::handleBodies, this, begin, end));
+        const int end = (i + 1) * bodiesPerThread;
+        if (begin >= m_bodies.size())
+        {
+            break;
+        }
+        if (end > m_bodies.size())
+        {
+            futures.append(QtConcurrent::run(&ThreeBodyMotion::handleBodies, this, begin, m_bodies.size()));
+            break;
+        }
+        futures.append(QtConcurrent::run(&ThreeBodyMotion::handleBodies, this, begin, end));
     }
 }
