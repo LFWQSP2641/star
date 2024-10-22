@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import com.LFWQSP2641.qmlcomponents
 
 ApplicationWindow {
     id: window
@@ -72,8 +73,9 @@ ApplicationWindow {
             anchors.fill: parent
 
             model: ListModel {
-                ListElement { title: qsTr("Three Body Motion"); source: "qrc:/quick/qml/ThreeBodyMotion.qml" }
+                ListElement { title: qsTr("Three Body Motion"); source: "qrc:/quick/qml/ThreeBodyMotion_qml.qml" }
                 ListElement { title: qsTr("Launching Ball"); source: "qrc:/quick/qml/LaunchingBall.qml" }
+                ListElement { title: qsTr("Three Body Motion (C++)"); source: "item:cppThreeBodyMotionComponent" }
             }
 
             delegate: ItemDelegate {
@@ -97,7 +99,14 @@ ApplicationWindow {
                         listView.currentIndex = -1
                         stackView.pop(initialPage, StackView.Immediate)
                     }
-                    stackView.push(source)
+                    if(source === "item:cppThreeBodyMotionComponent")
+                    {
+                        stackView.push(cppThreeBodyMotionComponent)
+                    }
+                    else
+                    {
+                        stackView.push(source)
+                    }
                 }
 
                 Component.onCompleted: {
@@ -133,14 +142,13 @@ ApplicationWindow {
         }
     }
 
-
-    // LaunchingBall {
-    //     id: ball
-    //     anchors.fill: parent
-    // }
-
-    // ThreeBodyMotion {
-    //     id: motion
-    //     anchors.fill: parent
-    // }
+    Component {
+        id: cppThreeBodyMotionComponent
+        ThreeBodyMotion {
+            id: cppThreeBodyMotion
+            Component.onCompleted: {
+                cppThreeBodyMotion.initialize()
+            }
+        }
+    }
 }
