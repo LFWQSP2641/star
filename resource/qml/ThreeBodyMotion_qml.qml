@@ -9,51 +9,12 @@ Item {
     property int trailLength: 32
     property int timerInterval: 16
     property double velocityMultiplier: 16
-    property double maxDistance: Math.min(width, height)
+    property double maxDistance: Math.min(width, height) - 20
     property double maxVelocity: 2
-
-    // 绘制边界
-    // top
-    Rectangle {
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        z: 2
-        color: Qt.rgba(0, 0, 0, 0.3)
-        height: 10
-    }
-    // bottom
-    Rectangle {
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        z: 2
-        color: Qt.rgba(0, 0, 0, 0.3)
-        height: 10
-    }
-    // left
-    Rectangle {
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        z: 2
-        color: Qt.rgba(0, 0, 0, 0.3)
-        width: 10
-    }
-    // right
-    Rectangle {
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        z: 2
-        color: Qt.rgba(0, 0, 0, 0.3)
-        width: 10
-    }
 
     Canvas {
         id: canvas
         anchors.fill: parent
-        z: 1
         onPaint: {
             const ctx = canvas.getContext("2d");
             ctx.clearRect(0, 0, canvas.width, canvas.height); // 清空画布
@@ -138,16 +99,9 @@ Item {
             body.x += body.vx * velocityMultiplier;
             body.y += body.vy * velocityMultiplier;
 
-            let xBoards = Math.min(body.x, canvas.width - body.x);
-            let yBoards = Math.min(body.y, canvas.height - body.y);
-
             // 边界反弹
-            if (xBoards < 10) {
-                body.vx *= -(xBoards / 10);
-            }
-            if (yBoards < 10) {
-                body.vy *= -(yBoards / 10);
-            }
+            if (body.x < 10 || body.x > canvas.width - 10) body.vx *= -1;
+            if (body.y < 10 || body.y > canvas.height - 10) body.vy *= -1;
 
             // 更新拖尾
             body.trail.push({ x: body.x, y: body.y });
