@@ -36,8 +36,8 @@ void ThreeBodyMotion::initialize()
         }
         else
         {
-            launchPoint = QPointF(QRandomGenerator::global()->generateDouble() * m_maxDistance + 10,
-                                  QRandomGenerator::global()->generateDouble() * m_maxDistance + 10);
+            launchPoint = QPointF((QRandomGenerator::global()->generateDouble() - 0.5) * m_maxDistance + width() / 2,
+                                  (QRandomGenerator::global()->generateDouble() - 0.5) * m_maxDistance + height() / 2);
         }
         if (i < m_launchVelocities.size())
         {
