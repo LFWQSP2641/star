@@ -67,7 +67,7 @@ void LaunchingBall::paint(QPainter *painter)
     {
         return;
     }
-    painter->setRenderHint(QPainter::Antialiasing, true);
+    // painter->setRenderHint(QPainter::Antialiasing, true);
     if (m_trailLength > 0)
     {
         for (int i = 0; i < m_trailLength; ++i)

@@ -94,7 +94,7 @@ void ThreeBodyMotion::paint(QPainter *painter)
     {
         return;
     }
-    painter->setRenderHint(QPainter::Antialiasing, true);
+    // painter->setRenderHint(QPainter::Antialiasing, true);
     // 绘制三体的拖尾
     for (int i = 0; i < m_trailLength; ++i)
     {
