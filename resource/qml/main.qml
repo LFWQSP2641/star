@@ -74,8 +74,9 @@ ApplicationWindow {
 
             model: ListModel {
                 ListElement { title: qsTr("Three Body Motion (C++)"); source: "item:cppThreeBodyMotionComponent" }
-                ListElement { title: qsTr("Three Body Motion"); source: "qrc:/quick/qml/ThreeBodyMotion_qml.qml" }
-                ListElement { title: qsTr("Launching Ball"); source: "qrc:/quick/qml/LaunchingBall.qml" }
+                ListElement { title: qsTr("Launching Ball (C++)"); source: "item:cppLaunchingBallComponent" }
+                ListElement { title: qsTr("Three Body Motion (qml)"); source: "qrc:/quick/qml/ThreeBodyMotion_qml.qml" }
+                ListElement { title: qsTr("Launching Ball (qml)"); source: "qrc:/quick/qml/LaunchingBall_qml.qml" }
             }
 
             delegate: ItemDelegate {
@@ -102,6 +103,10 @@ ApplicationWindow {
                     if(source === "item:cppThreeBodyMotionComponent")
                     {
                         stackView.push(cppThreeBodyMotionComponent)
+                    }
+                    else if(source === "item:cppLaunchingBallComponent")
+                    {
+                        stackView.push(cppLaunchingBallComponent)
                     }
                     else
                     {
@@ -148,6 +153,16 @@ ApplicationWindow {
             id: cppThreeBodyMotion
             Component.onCompleted: {
                 cppThreeBodyMotion.initialize()
+            }
+        }
+    }
+
+    Component {
+        id: cppLaunchingBallComponent
+        LaunchingBall {
+            id: cppLaunchingBall
+            Component.onCompleted: {
+                cppLaunchingBall.initialize()
             }
         }
     }

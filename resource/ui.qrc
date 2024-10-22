@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/quick">
         <file>qml/main.qml</file>
-        <file>qml/LaunchingBall.qml</file>
+        <file>qml/LaunchingBall_qml.qml</file>
         <file>qml/ThreeBodyMotion_qml.qml</file>
         <file>icon/angle-left.svg</file>
         <file>icon/barcode-scan.svg</file>

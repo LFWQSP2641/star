@@ -80,7 +80,8 @@ void ThreeBodyMotion::initialize()
               launchVelocity,
               radius,
               mass,
-              color });
+              color,
+              {} });
     }
     m_bodiesNext = QList<Body>(m_bodies.size());
     m_timerId = startTimer(m_timerIntervalMs);
@@ -111,8 +112,6 @@ void ThreeBodyMotion::paint(QPainter *painter)
             endColor.setAlphaF(1.0 - (double)(i + 1) / m_trailLength);
             gradient.setColorAt(0, beginColor);
             gradient.setColorAt(1, endColor);
-            painter->setBrush(gradient);
-            // 设置line宽度为5
             painter->setPen(QPen(gradient, 5));
 
             painter->drawLine(body.trail[i], body.trail[i + 1]);
@@ -171,24 +170,12 @@ void ThreeBodyMotion::handleBodies(int begin, int end)
             bodyNext.velocity *= m_maxReserVelocity / speed;
         }
         bodyNext.position += bodyNext.velocity * m_velocityMultiplier;
-        if (bodyNext.position.x() < 0)
+        if (bodyNext.position.x() < 10 || bodyNext.position.x() > width() - 10)
         {
-            bodyNext.position.setX(0);
             bodyNext.velocity.setX(-bodyNext.velocity.x());
         }
-        if (bodyNext.position.x() > width())
+        if (bodyNext.position.y() < 10 || bodyNext.position.y() > height() - 10)
         {
-            bodyNext.position.setX(width());
-            bodyNext.velocity.setX(-bodyNext.velocity.x());
-        }
-        if (bodyNext.position.y() < 0)
-        {
-            bodyNext.position.setY(0);
-            bodyNext.velocity.setY(-bodyNext.velocity.y());
-        }
-        if (bodyNext.position.y() > height())
-        {
-            bodyNext.position.setY(height());
             bodyNext.velocity.setY(-bodyNext.velocity.y());
         }
     }
@@ -199,6 +186,7 @@ void ThreeBodyMotion::updateBodies()
     if (m_futures.isEmpty())
     {
         QList<QFuture<void>> futures;
+        futures.reserve(QThreadPool::globalInstance()->maxThreadCount());
         runHandleBodies(futures);
         m_futures = std::move(futures);
     }
@@ -214,11 +202,7 @@ void ThreeBodyMotion::updateBodies()
 void ThreeBodyMotion::runHandleBodies(QList<QFuture<void>> &futures)
 {
     const int threadCount = QThreadPool::globalInstance()->maxThreadCount();
-    int bodiesPerThread = m_bodies.size() / threadCount;
-    if (bodiesPerThread == 0)
-    {
-        bodiesPerThread = 1;
-    }
+    const int bodiesPerThread = qCeil(double(m_bodies.size()) / double(threadCount));
     for (int i(0); i < threadCount; ++i)
     {
         const int begin = i * bodiesPerThread;

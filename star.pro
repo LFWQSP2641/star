@@ -19,9 +19,11 @@ INCLUDEPATH += \
     src
 
 HEADERS += \
+    src/LaunchingBall.h \
     src/ThreeBodyMotion.h
 
 SOURCES += \
+        src/LaunchingBall.cpp \
         src/ThreeBodyMotion.cpp \
         src/main.cpp
 
